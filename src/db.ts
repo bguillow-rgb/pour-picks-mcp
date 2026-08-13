@@ -1,45 +1,21 @@
 import { PostgrestClient } from "@supabase/postgrest-js";
-import { readFileSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 
 // The publishable (anon) key grants public-read access under RLS: the full
 // bottle catalog and community tasting reviews. The service-role key, when
 // provided, additionally unlocks live trending data (cellar adds are
 // user-scoped rows the anon key cannot aggregate). Either works; nothing in
-// this server ever writes.
+// this server ever writes except telemetry to a write-only log table.
 const PUBLISHABLE_URL = "https://nqnigdqkcvrziwcbgily.supabase.co";
 const PUBLISHABLE_KEY = "sb_publishable_UpINaQssccF9gF-PNo0ZwA_Ult0KxoF";
 
-function loadEnvLocal(): Record<string, string> {
-  // Dev convenience: when run from inside the pour-picks repo, pick up the
-  // app's .env.local so no extra configuration is needed.
-  const here = dirname(fileURLToPath(import.meta.url));
-  for (const candidate of [
-    resolve(here, "../../.env.local"),
-    resolve(here, "../../../.env.local"),
-  ]) {
-    try {
-      const out: Record<string, string> = {};
-      for (const line of readFileSync(candidate, "utf8").split("\n")) {
-        const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
-        if (m) out[m[1]] = m[2];
-      }
-      return out;
-    } catch {
-      /* keep looking */
-    }
-  }
-  return {};
-}
+// Configuration comes ONLY from explicit environment variables. This package
+// deliberately does NOT read .env files: a published npm package that scans
+// the host project's filesystem for credentials is a supply-chain hazard —
+// it could silently pick up an unrelated project's service key and send it
+// to the wrong server. (Versions <=1.0.1 had that bug; deprecated.)
+export const SUPABASE_URL = process.env.SUPABASE_URL || PUBLISHABLE_URL;
 
-const envFile = loadEnvLocal();
-
-export const SUPABASE_URL =
-  process.env.SUPABASE_URL || envFile.SUPABASE_URL || PUBLISHABLE_URL;
-
-const serviceKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY || envFile.SUPABASE_SERVICE_ROLE_KEY;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const key =
   serviceKey ||
@@ -50,7 +26,8 @@ const key =
 export const hasServiceKey = Boolean(serviceKey);
 
 // PostgREST-only client: no realtime, no auth, no storage — and structurally
-// read-only from this server (every query path issues SELECTs only).
+// read-only from this server (every query path issues SELECTs only; the one
+// write is telemetry to the insert-only mcp_call_logs table).
 export const supabase = new PostgrestClient(`${SUPABASE_URL}/rest/v1`, {
   headers: { apikey: key, Authorization: `Bearer ${key}` },
 });

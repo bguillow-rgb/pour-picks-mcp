@@ -31,12 +31,21 @@ const APP_STORE = "https://apps.apple.com/us/app/pour-picks/id6764040132";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// Lowercase, strip diacritics, and drop anything outside a safe charset —
+// PostgREST filter values and ilike wildcards (%, _) never see raw input.
 function normalizeQuery(q: string): string {
   return q
     .toLowerCase()
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9\s'&-]/g, " ")
     .trim();
+}
+
+// Never echo PostgREST error details to callers; log them server-side.
+function dbFail(error: { message: string }): never {
+  console.error(`database error: ${error.message}`);
+  throw new Error("Database query failed. Try again in a moment.");
 }
 
 // Catalog rows often repeat the distillery inside `name` and the whole name
@@ -124,7 +133,7 @@ export async function resolveBottle(slugOrId: string): Promise<Bottle | null> {
       .select(BOTTLE_COLUMNS)
       .eq("id", slugOrId.trim())
       .maybeSingle();
-    if (error) throw new Error(`Database error: ${error.message}`);
+    if (error) dbFail(error);
     return (data as unknown as Bottle) ?? null;
   }
   const norm = normalizeQuery(slugOrId);
@@ -135,7 +144,7 @@ export async function resolveBottle(slugOrId: string): Promise<Bottle | null> {
   const { data, error } = await q
     .order("popularity_tier", { ascending: false, nullsFirst: false })
     .limit(50);
-  if (error) throw new Error(`Database error: ${error.message}`);
+  if (error) dbFail(error);
   return rankByRelevance((data ?? []) as unknown as Bottle[], norm)[0] ?? null;
 }
 
@@ -190,7 +199,7 @@ export async function searchBottles(
   const { data, error } = await q
     .order("popularity_tier", { ascending: false, nullsFirst: false })
     .limit(opts.maxRows ?? (norm ? 50 : limit));
-  if (error) throw new Error(`Database error: ${error.message}`);
+  if (error) dbFail(error);
   const rows = (data ?? []) as unknown as Bottle[];
   return (norm ? rankByRelevance(rows, norm) : rows).slice(0, opts.maxRows ?? limit);
 }
@@ -250,7 +259,7 @@ export async function candidatePool(ref: Bottle, extra?: (q: any) => any): Promi
   if (ref.category) q = q.eq("category", ref.category);
   if (extra) q = extra(q);
   const { data, error } = await q.limit(400);
-  if (error) throw new Error(`Database error: ${error.message}`);
+  if (error) dbFail(error);
   return (data ?? []) as unknown as Bottle[];
 }
 
@@ -296,7 +305,7 @@ export async function trendingBottles(limit: number) {
     .order("popularity_tier", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(limit);
-  if (error) throw new Error(`Database error: ${error.message}`);
+  if (error) dbFail(error);
   return {
     method: "catalog_popularity_tier" as const,
     bottles: ((data ?? []) as unknown as Bottle[]).map((b) => ({

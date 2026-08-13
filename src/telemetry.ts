@@ -1,6 +1,6 @@
 import { supabase } from "./db.js";
 
-export const SERVER_VERSION = "1.0.1";
+export const SERVER_VERSION = "1.0.2";
 
 let clientInfo: { name?: string; version?: string } = {};
 
