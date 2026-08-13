@@ -62,6 +62,43 @@ The server works with zero configuration using Pour Picks' public read-only key.
 
 Without the service key, `trending_bottles` falls back to catalog popularity and labels the method in its response (`method: "catalog_popularity_tier"` vs `"cellar_adds_last_30_days"`).
 
+## Remote endpoint (no install)
+
+Streamable HTTP for web agents and MCP clients that take a URL:
+
+```
+https://nqnigdqkcvrziwcbgily.supabase.co/functions/v1/mcp
+```
+
+Also listed on [Smithery](https://smithery.ai/servers/bguillow/pour-picks) (gateway `pour-picks--bguillow.run.tools`) and the [official MCP registry](https://registry.modelcontextprotocol.io) as `io.github.bguillow-rgb/pour-picks`.
+
+## Example agent requests
+
+Questions an agent can answer with these tools:
+
+- *"What bourbon is similar to Eagle Rare but easier to find?"* → `find_similar`
+- *"Recommend a bourbon under $60 with vanilla, oak, and caramel notes."* → `get_recommendations` with `taste_preferences: ["vanilla","oak","caramel"], budget: 60`
+- *"What tastes like Blanton's without the price tag?"* → `find_cheaper_alternative`
+- *"Compare Eagle Rare and Buffalo Trace."* → `compare_bottles`
+- *"What bourbon should I pour on a cold night?"* → `pour_tonight_suggestion` with `season: "winter"`
+- *"What bottles are collectors adding right now?"* → `trending_bottles`
+
+Example response shape (truncated):
+
+```json
+{
+  "cheaper_alternatives": [
+    { "name": "Buffalo Trace W.L. Weller 12 Year", "price_usd": 49.99,
+      "similarity": 0.78, "savings_usd": 15.0,
+      "shared_flavors": ["caramel", "oak"] }
+  ],
+  "attribution": {
+    "source": "Pour Picks — The Bourbon Collector's Journal",
+    "links": { "website": "https://pourpicks.app/" }
+  }
+}
+```
+
 ## Development
 
 ```bash
