@@ -1,7 +1,7 @@
 {
   "name": "pour-picks-mcp",
-  "version": "1.0.0",
-  "description": "MCP server exposing the Pour Picks bourbon & whiskey database (4,700+ bottles) as read-only tools for AI assistants. Search the catalog, compare bottles, find cheaper alternatives, and get pour suggestions — with citation-ready attribution.",
+  "version": "1.0.1",
+  "description": "MCP server exposing the Pour Picks bourbon & whiskey database (4,700+ bottles) as read-only tools for AI assistants. Search the catalog, compare bottles, find cheaper alternatives, and get pour suggestions \u2014 with citation-ready attribution.",
   "mcpName": "io.github.bguillow-rgb/pour-picks",
   "type": "module",
   "bin": {

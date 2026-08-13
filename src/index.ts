@@ -99,6 +99,7 @@ server.registerTool(
   "search_bottles",
   {
     title: "Search the Pour Picks catalog",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Full-text search across 4,700+ bourbons, ryes, scotches, and other spirits in the Pour Picks database. Filter by category, price (USD), and proof. Returns structured tasting profiles with source attribution.",
     inputSchema: {
@@ -124,6 +125,7 @@ server.registerTool(
   "get_bottle",
   {
     title: "Get bottle details",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Detailed record for one bottle: tasting profile, flavor notes, pairings, price, community ratings. Accepts a Pour Picks bottle ID (UUID) or a bottle name.",
     inputSchema: {
@@ -143,6 +145,7 @@ server.registerTool(
   "find_similar",
   {
     title: "Find similar bottles",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Bottles with a similar flavor profile to a given bottle, ranked by shared flavor notes and body/sweetness/char proximity. Deterministic scoring over the Pour Picks structured tasting data.",
     inputSchema: {
@@ -173,6 +176,7 @@ server.registerTool(
   "find_cheaper_alternative",
   {
     title: "Find a cheaper alternative",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Bottles in the same style with a similar flavor profile at a lower price than the given bottle. Great for 'what tastes like X without the price tag' questions.",
     inputSchema: {
@@ -213,6 +217,7 @@ server.registerTool(
   "get_recommendations",
   {
     title: "Get personalized recommendations",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Personalized bottle picks from taste preferences (flavor keywords like 'caramel', 'smoke', 'cherry'), a budget in USD, and an occasion (e.g. 'gift', 'everyday sipper', 'celebration', 'introducing a friend to bourbon').",
     inputSchema: {
@@ -263,6 +268,7 @@ server.registerTool(
   "compare_bottles",
   {
     title: "Compare two bottles",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Side-by-side comparison of two bottles: proof, age, price, flavor profile, shared and distinct tasting notes, and community ratings.",
     inputSchema: {
@@ -299,6 +305,7 @@ server.registerTool(
   "trending_bottles",
   {
     title: "Trending bottles",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "Bottles Pour Picks users are adding to their cellars most over the last 30 days (falls back to catalog popularity when live activity data is unavailable). The method used is labeled in the response.",
     inputSchema: {
@@ -321,6 +328,7 @@ server.registerTool(
   "pour_tonight_suggestion",
   {
     title: "What should I pour tonight?",
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     description:
       "A pour suggestion for right now, based on mood (e.g. 'unwinding', 'celebratory', 'contemplative'), occasion (e.g. 'nightcap', 'with friends', 'after dinner'), and season.",
     inputSchema: {
