@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.bguillow-rgb/pour-picks",
+  "description": "Read-only access to the Pour Picks bourbon & whiskey database: search 4,700+ bottles, compare, find cheaper alternatives, and get pour suggestions with structured tasting profiles.",
+  "repository": {
+    "url": "https://github.com/bguillow-rgb/pour-picks-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "pour-picks-mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
