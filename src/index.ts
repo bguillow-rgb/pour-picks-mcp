@@ -334,7 +334,7 @@ server.registerTool(
     inputSchema: {
       mood: z.string().optional().describe("How you're feeling"),
       occasion: z.string().optional().describe("The setting"),
-      season: z.enum(["winter", "spring", "summer", "fall"]).optional(),
+      season: z.enum(["winter", "spring", "summer", "fall"]).optional().describe("Season to weight the pick toward — heavier, warming pours in winter; lighter in summer"),
     },
   },
   guarded("pour_tonight_suggestion", async ({ mood, occasion, season }) => {
