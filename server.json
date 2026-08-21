@@ -1,20 +1,38 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.bguillow-rgb/pour-picks",
+  "title": "Pour Picks",
   "description": "Search the Pour Picks bourbon & whiskey database: 4,700+ bottles with tasting profiles and prices.",
+  "version": "1.0.2",
+  "websiteUrl": "https://pourpicks.app/mcp",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/bguillow-rgb/pour-picks-mcp/main/logo.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "400x400"
+      ]
+    }
+  ],
   "repository": {
     "url": "https://github.com/bguillow-rgb/pour-picks-mcp",
     "source": "github"
   },
-  "version": "1.0.2",
   "packages": [
     {
       "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "pour-picks-mcp",
       "version": "1.0.2",
       "transport": {
         "type": "stdio"
       }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://nqnigdqkcvrziwcbgily.supabase.co/functions/v1/mcp"
     }
   ]
 }
