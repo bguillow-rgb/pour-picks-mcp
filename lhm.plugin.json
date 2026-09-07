@@ -1,7 +1,7 @@
 {
   "author": "Timberline Ventures LLC (https://pourpicks.app/)",
-  "cloudEndpoint": "https://nqnigdqkcvrziwcbgily.supabase.co/functions/v1/mcp",
-  "description": "MCP server exposing the Pour Picks bourbon & whiskey database (4,700+ bottles) as read-only tools for AI assistants. Search the catalog, compare bottles, find cheaper alternatives, and get pour suggestions \u2014 with citation-ready attribution.",
+  "cloudEndpoint": "https://mcp.pourpicks.app",
+  "description": "Bourbon and whiskey search, comparison, and recommendation engine for AI agents. Search 4,700+ bottles by flavor profile, proof, price, distillery and style; find bottles similar to one a user already enjoys; find a cheaper alternative with the same flavor profile; compare two bottles side by side; and get pour suggestions by mood, occasion and season. Read-only, no API key, every response carries source attribution.",
   "homepage": "https://pourpicks.app/",
   "identifier": "bguillow-rgb-pour-picks-mcp",
   "name": "Pour Picks",
@@ -26,6 +26,7 @@
         "properties": {
           "query": {
             "type": "string",
+            "maxLength": 120,
             "description": "Free-text search: distillery, bottle name, or expression"
           },
           "category": {
@@ -100,6 +101,7 @@
         "properties": {
           "slug_or_id": {
             "type": "string",
+            "maxLength": 120,
             "description": "Bottle UUID or a name like 'Eagle Rare 10'"
           }
         },
@@ -124,6 +126,7 @@
         "properties": {
           "bottle_id": {
             "type": "string",
+            "maxLength": 120,
             "description": "Bottle UUID or name"
           },
           "limit": {
@@ -154,6 +157,7 @@
         "properties": {
           "bottle_id": {
             "type": "string",
+            "maxLength": 120,
             "description": "Bottle UUID or name"
           },
           "limit": {
@@ -185,9 +189,11 @@
           "taste_preferences": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 60
             },
             "minItems": 1,
+            "maxItems": 20,
             "description": "Flavor keywords the drinker enjoys, e.g. ['caramel','vanilla','oak']"
           },
           "budget": {
@@ -197,6 +203,7 @@
           },
           "occasion": {
             "type": "string",
+            "maxLength": 120,
             "description": "What the bottle is for"
           },
           "category": {
@@ -254,10 +261,12 @@
         "properties": {
           "bottle_a": {
             "type": "string",
+            "maxLength": 200,
             "description": "First bottle \u2014 UUID or name"
           },
           "bottle_b": {
             "type": "string",
+            "maxLength": 200,
             "description": "Second bottle \u2014 UUID or name"
           }
         },
@@ -306,10 +315,12 @@
         "properties": {
           "mood": {
             "type": "string",
+            "maxLength": 120,
             "description": "How you're feeling"
           },
           "occasion": {
             "type": "string",
+            "maxLength": 120,
             "description": "The setting"
           },
           "season": {
@@ -319,7 +330,8 @@
               "spring",
               "summer",
               "fall"
-            ]
+            ],
+            "description": "Season to weight the pick toward \u2014 heavier, warming pours in winter; lighter in summer"
           }
         },
         "additionalProperties": false,
@@ -333,5 +345,5 @@
       }
     }
   ],
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
