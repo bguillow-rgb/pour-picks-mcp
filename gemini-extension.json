@@ -1,0 +1,11 @@
+{
+  "name": "pour-picks-mcp",
+  "version": "1.0.2",
+  "description": "Look up 4,700+ bourbons, ryes, scotches and other spirits: tasting profiles, similar bottles, cheaper alternatives, comparisons and picks by flavor and budget.",
+  "mcpServers": {
+    "pour-picks": {
+      "httpUrl": "https://mcp.pourpicks.app/mcp?src=gemini"
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}
